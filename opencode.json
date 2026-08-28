@@ -10,5 +10,12 @@
                 "boost:mcp"
             ]
         }
+    },
+    "references": {
+        "development-standards": {
+            "repository": "Mahmoud217TR/Development-Standards",
+            "branch": "main",
+            "description": "Authoritative team standards for Laravel architecture, testing, code quality, and Git workflow. Use with the team-development-standards skill."
+        }
     }
 }
