@@ -2,9 +2,22 @@
 
 namespace App\Models;
 
+use App\Utilities\Money;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $transaction_id
+ * @property int $account_id
+ * @property Money $amount
+ * @property string $currency
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
+#[Fillable(['amount', 'currency'])]
 class Entry extends Model
 {
     /** @use HasFactory<\Database\Factories\EntryFactory> */
