@@ -6,6 +6,7 @@ use App\Enums\AccountType;
 use App\Enums\AccountCategory;
 use App\Enums\Currency;
 use App\Utilities\Money;
+use Cknow\Money\Casts\MoneyDecimalCast;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property AccountType $type
  * @property AccountCategory $category
  * @property Money|null $balance
- * @property Currency|null $currency
+ * @property string|null $currency
  * @property boolean $is_postable
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -30,6 +31,15 @@ class Account extends Model
 {
     /** @use HasFactory<\Database\Factories\AccountFactory> */
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'type' => AccountType::class,
+            'category' => AccountCategory::class,
+            'balance' => MoneyDecimalCast::class.':currency',
+        ];
+    }
 
     public function parent(): BelongsTo
     {

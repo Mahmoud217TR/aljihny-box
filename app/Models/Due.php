@@ -2,50 +2,43 @@
 
 namespace App\Models;
 
+use App\Enums\DuePeriod;
 use App\Utilities\Money;
 use Cknow\Money\Casts\MoneyDecimalCast;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int $member_id
- * @property int $transaction_id
- * @property int $receiver_id
+ * @property string $state
+ * @property int|null $member_id
+ * @property DuePeriod $period
  * @property Money $amount
  * @property string $currency
- * @property Carbon $payed_at
+ * @property Carbon $due_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['amount', 'currency', 'payed_at'])]
-class Payment extends Model
+#[Fillable(['state', 'period', 'amount', 'currency', 'due_date'])]
+class Due extends Model
 {
-    /** @use HasFactory<\Database\Factories\PaymentFactory> */
+    /** @use HasFactory<\Database\Factories\DueFactory> */
     use HasFactory;
 
     protected function casts(): array
     {
         return [
+            'period' => DuePeriod::class,
             'amount' => MoneyDecimalCast::class.':currency',
-            'payed_at' => 'datetime',
+            'due_date' => 'datetime',
         ];
     }
 
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
-    }
-
-    public function transaction(): BelongsTo
-    {
-        return $this->belongsTo(Transaction::class);
-    }
-
-    public function receiver(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'receiver_id');
     }
 }

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('dues', function (Blueprint $table) {
             $table->id();
+            $table->string('state');
+            $table->string('period');
             $table->foreignId('member_id')->constrained('members', 'id')->onDelete('cascade');
-            $table->foreignId('transaction_id')->constrained('transactions', 'id')->onDelete('cascade');
-            $table->foreignId('receiver_id')->constrained('admins', 'id')->onDelete('cascade');
             $table->decimal('amount', 12, 2)->unsigned()->default(0);
             $table->string('currency', 3);
-            $table->timestampTz('payed_at');
+            $table->timestampTz('due_date');
             $table->timestampsTz();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment');
+        Schema::dropIfExists('dues');
     }
 };

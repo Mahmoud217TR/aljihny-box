@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->foreignId('id')->unique()->constrained('users', 'id');
+            $table->foreignId('id')->unique()->constrained('users', 'id')->onDelete('cascade');
             $table->string('state');
             $table->timestampsTz();
             $table->softDeletesTz();

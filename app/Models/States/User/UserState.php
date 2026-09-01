@@ -6,7 +6,7 @@ use App\Enums\UserStatus;
 use App\Models\States\State;
 use Spatie\ModelStates\StateConfig;
 
-abstract class MemberState extends State
+abstract class UserState extends State
 {
     abstract public function enum(): UserStatus;
     abstract public function label(): string;
