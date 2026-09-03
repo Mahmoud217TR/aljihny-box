@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->integer('code')->unsigned()->unique();
             $table->string('name');
             $table->foreignId('account_id')->nullable()->constrained('accounts', 'id')->onDelete('cascade');
             $table->string('type');
             $table->string('category');
-            $table->decimal('balance', 12, 2)->unsigned()->nullable()->default(0);
+            $table->decimal('balance', 16, 2)->nullable()->default(0);
             $table->string('currency', 3)->nullable();
             $table->boolean('is_postable');
             $table->timestampsTz();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Transaction;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<Transaction>
  */
-class TransactionFactory extends Factory
+final class TransactionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +20,11 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'description' => fake()->sentence(),
+            'at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'metadata' => [
+                'reference' => fake()->unique()->uuid(),
+            ],
         ];
     }
 }

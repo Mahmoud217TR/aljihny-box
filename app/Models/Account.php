@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AccountType;
 use App\Enums\AccountCategory;
 use App\Enums\Currency;
+use App\Enums\EntryType;
 use App\Utilities\Money;
 use Cknow\Money\Casts\MoneyDecimalCast;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int $code
  * @property string $name
  * @property int|null $account_id
  * @property AccountType $type
@@ -26,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  */
-#[Fillable(['name', 'type', 'category', 'balance', 'currency', 'is_postable'])]
+#[Fillable(['code', 'name', 'type', 'category', 'balance', 'currency', 'is_postable'])]
 class Account extends Model
 {
     /** @use HasFactory<\Database\Factories\AccountFactory> */
@@ -54,5 +56,16 @@ class Account extends Model
     public function entries(): HasMany
     {
         return $this->hasMany(Entry::class);
+    }
+
+    public static function findByCode(int $code): ?Account
+    {
+        return self::where('code', $code)->first();
+    }
+
+    public function haveToIncreaseFor(EntryType $type): bool
+    {
+        return $this->type == AccountType::CreditNormal && $type == EntryType::Credit
+            || $this->type == AccountType::DebitNormal && $type == EntryType::Debit;
     }
 }

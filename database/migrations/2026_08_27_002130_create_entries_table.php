@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id')->constrained('transactions', 'id')->onDelete('cascade');
             $table->foreignId('account_id')->constrained('accounts', 'id')->onDelete('cascade');
+            $table->string('type');
             $table->decimal('amount', 12, 2)->unsigned()->default(0);
             $table->string('currency', 3);
             $table->timestampsTz();

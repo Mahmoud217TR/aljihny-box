@@ -8,6 +8,7 @@ use Spatie\ModelStates\StateConfig;
 
 abstract class DueState extends State
 {
+
     abstract public function enum(): DueStatus;
     abstract public function label(): string;
     abstract public function color(): string;

@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\ModelStates\HasStates;
 
 /**
  * @property int $id
@@ -44,6 +45,21 @@ class User extends Authenticatable implements PasskeyUser, FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasStates;
+
+    public static function booted(): void
+    {
+        parent::booted();
+
+        static::creating(function (User $user) {
+            if (empty($user->full_name)) {
+                $user->full_name = trim("{$user->first_name} {$user->middle_name} {$user->last_name}");
+                if (filled($user->nick_name)) {
+                    $user->full_name .= " ({$user->nick_name})";
+                }
+            }
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
